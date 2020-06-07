@@ -1,6 +1,10 @@
 const puppeteer = require("puppeteer");
 const request = require("request");
 
+
+/*
+Scrapper for Glassdoor
+*/
 async function startGlassdoor(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
   const browser = await puppeteer.launch({ headless: true, slowMo: 5, devtools: false });
   const page = await browser.newPage();
