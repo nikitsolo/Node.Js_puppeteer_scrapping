@@ -6,7 +6,7 @@ const request = require("request");
 Scrapper for Glassdoor
 */
 async function startGlassdoor(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
-  const browser = await puppeteer.launch({ headless: true, slowMo: 5, devtools: false });
+  const browser = await puppeteer.launch({ headless: false, slowMo: 5, devtools: false });
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 1040 });
 
@@ -65,7 +65,7 @@ async function startGlassdoor(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
 
 
 
-  while (n <= seitenAnz) {
+  while (n <= seitenAnz && n<= PAGES_INT) {
     console.log("Seite: " + n);
     let inf = await scrapPage(page, browser, n);
     infos.push(inf);
@@ -226,6 +226,7 @@ async function scrapPage(page, browser, page_nr) {
       await page.waitForSelector("#MainCol > div > ul > li:nth-child( 1) > div.jobContainer > a", { timeout: 2000 });
 
     } catch{
+      console.log("cont");
       continue;
     }
 

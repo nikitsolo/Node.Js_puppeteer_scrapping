@@ -1,21 +1,25 @@
 
-const puppeteer = require("puppeteer");
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 const request = require("request");
+const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
+
 
 async function startIndeed(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
-  const browser = await puppeteer.launch({ headless: true, slowMo: 5, devtools: false });
+  const browser = await puppeteer.launch({ headless: false, slowMo: 5, devtools: false });
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 1040 });
 
+  await puppeteer.use(StealthPlugin())
+  //puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
 
+
+  //Blockiert js und pic
   await page.setRequestInterception(true);
   await page.on('request', (req) => {
     if (req.resourceType() == 'font' || req.resourceType() == 'image') {
       req.abort();
-    }
-    else {
-      req.continue();
     }
   });
 
@@ -63,7 +67,7 @@ async function startIndeed(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
 
     seitenAnz = seitenAnz.split(' '),
       seitenAnz = seitenAnz[3];
-    console.log("Seitenanzahl: " + seitenAnz);
+    console.log("Stellenanzeigen: " + seitenAnz);
   } catch{
 
     console.log("konnte anzahl der Seiten nicht lesen!");
@@ -84,10 +88,20 @@ async function startIndeed(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
       m = n;
     }
 
+    let SeiteWeiter;
+    if(WHERE_TEXT != "Wien") {
+      SeiteWeiter = "#resultsCol > div.pagination > a:nth-child(" + m + ") > span"
+    }else{
+      SeiteWeiter = "#resultsCol > nav > div > ul > li:nth-child("+ m + ") > a > span"
+    }
+    
+   
+
     try {
-      await page.click(
-        "#resultsCol > div.pagination > a:nth-child(" + m + ") > span");
+      await page.click(SeiteWeiter);
     } catch (e) {
+      console.log("Verarbeitung fertig..." + SeiteWeiter);
+      await page.waitFor(5000);
       break;
     }
 
@@ -107,8 +121,17 @@ async function startIndeed(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
 
 //Die angezeigte Seite von oben nach unten scrappen ---------------------------------------------------
 async function scrapPage(page) {
-  await clickIfAv(page, "#popover-x > a > svg > g > path");
 
+
+
+
+  page.on('popup', resp => {
+    console.log("pages length " + pages.length);
+    page.length = 2;
+    console.log("pages length " + pages.length);
+  });
+
+  await clickIfAv(page, "#popover-x > a > svg > g > path");
   await page.waitFor(500);
 
 
@@ -153,28 +176,28 @@ async function scrapPage(page) {
   await page.waitFor(500);
 
   for (i = 0; i < result.length; i++) {
-
+    //page.on('popup', () => console.info('👉 New page is opened'));
 
     try {
       await page.waitForSelector("#" + result[i].id, { timeout: 5000 });
       await page.click("#" + result[i].id);
-      if (page.url() == 'https://hrtechprivacy.com/de/brands/about-indeed' || page.url() == 'https://hrtechprivacy.com/de/brands/about-indeed#Cookies') {
+
+      if (page.url() == 'https://hrtechprivacy.com/de/brands/about-indeed' || page.url() == 'https://hrtechprivacy.com/de/brands/about-indeed#Cookies' || page.url() == 'https://hrtechprivacy.com/de/brands/about-indeed#PrivacyPolicy') {
+        console.log("Werbung")
         await page.goBack();
         await page.waitForSelector("#" + result[i].id, { timeout: 5000 });
         await page.click("#" + result[i].id);
       }
+
     } catch (e) {
 
-      console.log(e);
       try {
-        await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
         await page.waitForSelector("#" + result[i].id, { timeout: 5000 });
         await page.click("#" + result[i].id);
       } catch{
         continue;
       }
     }
-
 
     await clickIfAv(page, "#popover-x");
 
@@ -198,7 +221,8 @@ async function scrapPage(page) {
       let things = [];
       let Title = document.querySelector("#vjs-jobtitle").innerText;
       let Company = document.querySelector("#vjs-cn").innerText;
-      let City = document.querySelector("#vjs-tab-job > div.jobMetadataHeader > div > span.jobMetadataHeader-itemWithIcon-label").innerText;
+      let City = document.querySelector("#vjs-loc").innerText;
+
       let Descr = document.querySelectorAll("#vjs-desc")[0].innerText.replace(/\r\n|\n|\r/gm, "  ");
       let URL;
       let Days;
@@ -216,7 +240,6 @@ async function scrapPage(page) {
     endData.push(info);
 
   }
-
   return endData;
 } // end of scrapFirstPage--------------------------------------------------------
 

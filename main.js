@@ -3,6 +3,7 @@ const indeed = require("./indeed.js");
 const stepstone = require("./stepstone.js");
 const glassdoor = require("./glassdoor.js");
 const db = require("./db");
+const cron = require("node-cron");
 
 
 // --------------------------- INDEED ---------------------------
@@ -150,6 +151,7 @@ async function saveDataDB(data, WHAT_TEXT, WHERE_TEXT, PAGES_INT, website, fail_
 
   // In DB speichern
   for (i = 0; i < data.length; i++) {
+    console.log("Der "+ i + " Punkt wurde gespeichert")
     for (j = 0; j < data[i].length; j++) {
 
       try {
@@ -253,6 +255,7 @@ async function saveDataDB(data, WHAT_TEXT, WHERE_TEXT, PAGES_INT, website, fail_
       catch (e) {
         console.log("es geht nicht weiter");
         console.log(e)
+        continue;
       }
     }
   }
@@ -301,9 +304,8 @@ async function scrapParallel(startcounter, what, city, page) {
   //await scrapIndeed(startcounter, what, city, page);
   await scrapStepstone(startcounter, what, city, page);
 
-
-
 }
+
 
 async function scrap(page, city) {
 
@@ -346,7 +348,6 @@ async function scrapCity3(page) {
 
 async function scrapCity4(page) {
 
-
   await scrap(page, "Köln");
   await scrap(page, "Berlin");
 
@@ -354,12 +355,22 @@ async function scrapCity4(page) {
 
 async function scrapAll(page) {
   await scrapCity1(page);
-  await scrapCity2(page);
-  await scrapCity3(page);
-  await scrapCity4(page);
+  //await scrapCity2(page);
+  //await scrapCity3(page);
+  //await scrapCity4(page);
   //scrapCity1(page);
 }
+
 //scrapGlassdoor(0, "IT Trainee", "Frankfurt", 2);
 //testScrap();
-scrapAll(300);
+scrapAll(1);
+
+    /* schedule tasks to be run on the server
+    cron.schedule(" 5 * * * * *", function() {
+      scrapStepstone(0, "IT Junior", "Wien", 1);
+    
+  });
+
+  */
+
 

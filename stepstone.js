@@ -1,14 +1,24 @@
-const puppeteer = require("puppeteer");
-const request = require("request");
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+
+
 
 async function startStepstone(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
   const browser = await puppeteer.launch({ headless: false, slowMo: 5, devtools: false });
   const page = await browser.newPage();
+
   await page.setViewport({ width: 1280, height: 1040 });
 
 
   await page.setRequestInterception(true);
 
+  puppeteer.use(StealthPlugin())
+  const request = require("request");
+  const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
+  //puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
+
+
+  //Blockiert Javascript, Bilder etc
   page.on('request', (req) => {
     if (req.resourceType() == 'stylesheet' || req.resourceType() == 'font' || req.resourceType() == 'image') {
       req.abort();
@@ -45,7 +55,7 @@ async function startStepstone(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
   const infos = [];
   n = 1;
 
-  while (n < PAGES_INT) {
+  while (n <= PAGES_INT) {
     console.log("Seite: " + n);
     let inf = await scrapPage(page, browser, n);
     infos.push(inf);
@@ -96,6 +106,7 @@ async function scrapPage(page, browser, page_nr) {
 
     const page_new = await browser.newPage();
     await page_new.setViewport({ width: 1280, height: 1040 });
+    await page_new.emulate(devices['iPhone X']);
     await page_new.setDefaultNavigationTimeout(100000);
 
 
@@ -115,14 +126,14 @@ async function scrapPage(page, browser, page_nr) {
     let title_slctr = "body > div.pagelayout > div.frame.frame_listing.listing_html_ld.branding-colors__primary > div.container.listing-container.js-listing-container > div > div.col-lg-9.col-xlg-9.print-100-percent.js-listing-container-left > div.listing-content.js-listing-content.listing-content-liquiddesign > div.js-app-ld-HeaderStepStoneBlock > div > section > div > div > div > div.sc-kpOJdX.bXIViw > div.sc-dxgOiQ.dGbaTN > div:nth-child(2) > h1"
     let descr_slctr = "div.listing-content.js-listing-content.listing-content-liquiddesign > div:nth-child(4) > div"
 
-
+/*
     try {
       await page_new.goto(result[i].href);
       await page_new.waitForSelector(title_slctr, { timeout: 2000 });
 
     } catch (e) {
-
       try {
+
         let title_slctr = "body > div.pagelayout > div.frame.frame_listing.listing_html_ld.branding-colors__primary > div.container.listing-container.js-listing-container > div > div.col-lg-9.col-xlg-9.print-100-percent.js-listing-container-left > div.listing-content.js-listing-content.listing-content-liquiddesign > div.js-app-ld-HeaderStepStoneBlock > div > section > div > div > div > div.sc-kpOJdX.bXIViw > div.sc-dxgOiQ.dGbaTN > div:nth-child(2) > h1";
         
         await page_new.waitForSelector(title_slctr, { timeout: 2000 });
@@ -130,10 +141,17 @@ async function scrapPage(page, browser, page_nr) {
       } catch (e) {
 
         try {
+          for(i =1; i< 100; i++){
+            await page_new.move(2, 2);
+            await page_new.waitFor(5);
+            await page_new.down();
+            await page_new.move(2, 2);
+            await page_new.waitFor(5);
+            await page_new.up();
+          }
 
-          console.log("ACHTUNG: NULL JETZT")
-          await page_new.waitFor(10000);
-
+          
+          console.log("moved");
           let title_slctr = "body > div.pagelayout > div.background-image > div > div.container.listing-container.js-listing-container > div > div.col-lg-9.col-xlg-9.print-100-percent.js-listing-container-left > div.listing-content.js-listing-content.listing-content-liquiddesign > div.js-app-ld-HeaderStepStoneBlock > div > section > div > div > div > div.sc-kpOJdX.bXIViw > div.sc-dxgOiQ.dGbaTN > div:nth-child(2) > h1";
         
           await page_new.waitForSelector(title_slctr, { timeout: 2000 });
@@ -143,13 +161,14 @@ async function scrapPage(page, browser, page_nr) {
   
   
         } catch (e) {
-          console.log("hilft alles nicht  ")
-          await page_new.waitFor(10000);
+          console.log("Konnte Button nicht anklicken, weiter gehts  ")
+          //await page_new.waitFor(10000);
           await page_new.close();
           continue;
         }
       }
     }
+    */
 
 
 
