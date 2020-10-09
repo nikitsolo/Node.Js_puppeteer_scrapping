@@ -1,10 +1,12 @@
 const mysql = require('mysql');
+require('dotenv').config();
+
 const pool = mysql.createPool({
     connectionLimit: 10,
-    password: 'SCelch1995',
-    user: 'USER400574_scpr2',
-    database: 'db_400574_9',
-    host: 'wahlprojektwebapp.lima-db.de',
+    password: process.env.password,
+    user: process.env.user,
+    database: process.env.database,
+    host: process.env.host,
     port: '3306'
 });
 

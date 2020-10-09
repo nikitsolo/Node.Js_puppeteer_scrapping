@@ -11,17 +11,22 @@ async function startIndeed(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 1040 });
 
-  await puppeteer.use(StealthPlugin())
-  //puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
-
-
-  //Blockiert js und pic
   await page.setRequestInterception(true);
-  await page.on('request', (req) => {
-    if (req.resourceType() == 'font' || req.resourceType() == 'image') {
+
+  puppeteer.use(StealthPlugin())
+  const request = require("request");
+
+
+  //Blockiert Javascript, Bilder etc
+  page.on('request', (req) => {
+    if ( req.resourceType() == 'font' || req.resourceType() == 'image') {
       req.abort();
     }
+    else {
+      req.continue();
+    }
   });
+
 
 
   if (WHERE_TEXT == "Wien") {
@@ -277,11 +282,8 @@ async function clickIfAv(page, selector) {
 } // end of clickIfAv--------------------------------------------------------------
 
 module.exports = {
-  name: "David",
-  email: "info@mail.com",
-  doIndeed: async (WHAT_TEXT, WHERE_TEXT, PAGES_INT) => {
-    let val = await startIndeed(WHAT_TEXT, WHERE_TEXT, PAGES_INT);
 
-    return val;
+  doIndeed: async (WHAT_TEXT, WHERE_TEXT, PAGES_INT) => {
+    return await startIndeed(WHAT_TEXT, WHERE_TEXT, PAGES_INT);
   }
 };

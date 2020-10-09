@@ -317,7 +317,6 @@ async function clickIfAv(page, selector) {
 /**
  * Methode zum klicken eines Buttons.
  * Rückgabewert true bei gelingen, false bei scheitern. 
- * Kurze Rückmeldung über Console.log zum Stand
  */
 
 async function clickButton(selector, page) {
@@ -341,7 +340,7 @@ async function clickButton(selector, page) {
 module.exports = {
 
   doGlassdoor: async (WHAT_TEXT, WHERE_TEXT, PAGES_INT) => {
-    let val = await startGlassdoor(WHAT_TEXT, WHERE_TEXT, PAGES_INT);
-    return val;
+    return await startGlassdoor(WHAT_TEXT, WHERE_TEXT, PAGES_INT);
+
   }
 };

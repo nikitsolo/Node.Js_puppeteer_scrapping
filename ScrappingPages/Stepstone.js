@@ -14,8 +14,7 @@ async function startStepstone(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
 
   puppeteer.use(StealthPlugin())
   const request = require("request");
-  const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
-  //puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
+
 
 
   //Blockiert Javascript, Bilder etc
@@ -70,7 +69,8 @@ async function startStepstone(WHAT_TEXT, WHERE_TEXT, PAGES_INT) {
 
     n++;
   }
-  browser.close();
+  await page.waitFor(50);
+  await browser.close();
   return infos;
 
 } // end of startIndeed ------------------------------------------------------------------------------
@@ -126,50 +126,9 @@ async function scrapPage(page, browser, page_nr) {
     let title_slctr = "body > div.pagelayout > div.frame.frame_listing.listing_html_ld.branding-colors__primary > div.container.listing-container.js-listing-container > div > div.col-lg-9.col-xlg-9.print-100-percent.js-listing-container-left > div.listing-content.js-listing-content.listing-content-liquiddesign > div.js-app-ld-HeaderStepStoneBlock > div > section > div > div > div > div.sc-kpOJdX.bXIViw > div.sc-dxgOiQ.dGbaTN > div:nth-child(2) > h1"
     let descr_slctr = "div.listing-content.js-listing-content.listing-content-liquiddesign > div:nth-child(4) > div"
 
-/*
-    try {
-      await page_new.goto(result[i].href);
-      await page_new.waitForSelector(title_slctr, { timeout: 2000 });
 
-    } catch (e) {
-      try {
 
-        let title_slctr = "body > div.pagelayout > div.frame.frame_listing.listing_html_ld.branding-colors__primary > div.container.listing-container.js-listing-container > div > div.col-lg-9.col-xlg-9.print-100-percent.js-listing-container-left > div.listing-content.js-listing-content.listing-content-liquiddesign > div.js-app-ld-HeaderStepStoneBlock > div > section > div > div > div > div.sc-kpOJdX.bXIViw > div.sc-dxgOiQ.dGbaTN > div:nth-child(2) > h1";
-        
-        await page_new.waitForSelector(title_slctr, { timeout: 2000 });
-
-      } catch (e) {
-
-        try {
-          for(i =1; i< 100; i++){
-            await page_new.move(2, 2);
-            await page_new.waitFor(5);
-            await page_new.down();
-            await page_new.move(2, 2);
-            await page_new.waitFor(5);
-            await page_new.up();
-          }
-
-          
-          console.log("moved");
-          let title_slctr = "body > div.pagelayout > div.background-image > div > div.container.listing-container.js-listing-container > div > div.col-lg-9.col-xlg-9.print-100-percent.js-listing-container-left > div.listing-content.js-listing-content.listing-content-liquiddesign > div.js-app-ld-HeaderStepStoneBlock > div > section > div > div > div > div.sc-kpOJdX.bXIViw > div.sc-dxgOiQ.dGbaTN > div:nth-child(2) > h1";
-        
-          await page_new.waitForSelector(title_slctr, { timeout: 2000 });
-
-          //await page.waitForSelector("body > div.pagelayout > div.background-image > div > div.container.listing-container.js-listing-container > div > div.col-lg-9.col-xlg-9.print-100-percent.js-listing-container-left > div.js-app-ld-ExitIntentModalBlock > div > div > div > div", { timeout: 10000 });
-          //await clickIfAv(page_new, "body > div.pagelayout > div.background-image > div > div.container.listing-container.js-listing-container > div > div.col-lg-9.col-xlg-9.print-100-percent.js-listing-container-left > div.js-app-ld-ExitIntentModalBlock > div > div > div > div");
-  
-  
-        } catch (e) {
-          console.log("Konnte Button nicht anklicken, weiter gehts  ")
-          //await page_new.waitFor(10000);
-          await page_new.close();
-          continue;
-        }
-      }
-    }
-    */
-
+    
 
 
 
@@ -280,7 +239,6 @@ async function clickIfAv(page, selector) {
 /**
  * Methode zum klicken eines Buttons.
  * Rückgabewert true bei gelingen, false bei scheitern. 
- * Kurze Rückmeldung über Console.log zum Stand
  */
 
 async function clickButton(selector, page) {
@@ -305,7 +263,7 @@ async function clickButton(selector, page) {
 module.exports = {
 
   doStepstone: async (WHAT_TEXT, WHERE_TEXT, PAGES_INT) => {
-    let val = await startStepstone(WHAT_TEXT, WHERE_TEXT, PAGES_INT);
-    return val;
+    return await startStepstone(WHAT_TEXT, WHERE_TEXT, PAGES_INT);
+
   }
 };
