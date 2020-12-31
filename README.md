@@ -17,7 +17,7 @@ Städte: 'Frankfurt', 'Wiesbaden', 'Mainz', 'Wien', 'München', 'Bochum', 'Stutt
 
 Schlagwörter: 'IT Junior', 'IT Trainee', 'Data Junior', 'Data Trainee', 'BI Junior', 'BI Trainee', 'KI Junior', 'KI Trainee'
 
-3*10*8 = 240 Kombinationen aus Städten Berufsfeldern und Webseiten zum Scrappen
+=240 Kombinationen aus Städten Berufsfeldern und Webseiten zum Scrappen
 
 Mein Scrapper ist über einen Zeitraum von ca 6 Monaten (Leider nicht regelmäßig) mit 240 verschiedenen Kombinationen gestartet worden.
 Es wurden ca 35.000 Stellenangebote gesammelt.
