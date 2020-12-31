@@ -12,7 +12,9 @@ hatte ich ein wenig Erfahrung mit den abgesuchten Seiten. Meiner Erfahrung nach 
 
 ## Ergebnis
 Webseiten: 'Indeed', 'Stepstone', 'Glassdoor'
+
 Städte: 'Frankfurt', 'Wiesbaden', 'Mainz', 'Wien', 'München', 'Bochum', 'Stuttgart', 'Hamburg', 'Köln', 'Berlin'
+
 Schlagwörter: 'IT Junior', 'IT Trainee', 'Data Junior', 'Data Trainee', 'BI Junior', 'BI Trainee', 'KI Junior', 'KI Trainee'
 
 3*10*8 = 240 Kombinationen aus Städten Berufsfeldern und Webseiten zum Scrappen
