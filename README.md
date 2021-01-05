@@ -10,6 +10,12 @@ diese in einer MySQL Datenbank ab.
 Da zum Zeitpunkt der Idee (Ende 2019) ich mich langsam um interessante Berufsbereiche (BI, Data Science, etc.) und attraktive Arbeitgeber umgeschaut habe, 
 hatte ich ein wenig Erfahrung mit den abgesuchten Seiten. Meiner Erfahrung nach waren die Suchalgorithmen der Webseiten etwas ineffektiv, und inspieriert durch das bekanntes Data Mining Video [SpiegelMining – Reverse Engineering von Spiegel-Online (33c3)](https://www.youtube.com/watch?v=-YpwsdRKt8Q&t=1109s "SpiegelMining – Reverse Engineering von Spiegel-Online (33c3)"), beschloss Ich daraus meinen ersten Scrapper zu bauen. 
 
+## Data Cleaning
+
+Änderung aller Städte in ein einheitliches zBs Frankfurt, Frankfurt a.M., Näher frankfurt, Raum frankfurt zu Frankfurt am Main
+
+Änderung aller Umlaute, zB. ä zu ae
+
 ## Ergebnis
 Webseiten: 'Indeed', 'Stepstone', 'Glassdoor'
 
