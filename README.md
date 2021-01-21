@@ -12,7 +12,7 @@ hatte ich ein wenig Erfahrung mit den abgesuchten Seiten. Meiner Erfahrung nach 
 
 ## Data Cleaning
 
-Änderung aller Städte in ein einheitliches zBs Frankfurt, Frankfurt a.M., Näher frankfurt, Raum frankfurt zu Frankfurt am Main
+Änderung aller Städte in ein einheitliches zBs Frankfurt, Frankfurt a.M., Nähe Frankfurt, Raum Frankfurt zu Frankfurt am Main
 
 Änderung aller Umlaute, zB. ä zu ae
 
